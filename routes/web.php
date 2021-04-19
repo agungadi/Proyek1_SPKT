@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,7 +27,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
+
+
 ////// Monitor Melihat Daftar Antrian//////
 Route::get('/monitor', function () {
     return view('monitor1');
 });
+
+////// Monitor Melihat Daftar Antrian//////
+Route::get('/antrian', 'PageController@index');
