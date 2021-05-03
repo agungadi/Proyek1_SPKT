@@ -40,10 +40,10 @@ class PageController extends Controller
 
         $request->validate(['keperluan'=>'required']);
         $date = Carbon::now()->format('Y-m-d');
-        $cek = Antrian::where('keperluan', $request->keperluan)->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
+        $cek = Antrian::where('keperluan', $request->keperluan)->whereDate('created_at', $date)->orderBy('no_antrean', 'desc')->first();
 
         $antrian = Antrian::create([
-            'no_antrian' => $cek == null ? 0 + 1 : ($cek->no_antrian + 1),
+            'no_antrean' => $cek == null ? 0 + 1 : ($cek->no_antrean + 1),
             'keperluan' => $request->keperluan,
             'status' => 0,
         ]);
@@ -55,7 +55,7 @@ class PageController extends Controller
 
 
 
-        public function print($antrian) {
+    public function print($antrian) {
 
         $date = $antrian->created_at->format('d/m/Y h:i');
 
@@ -82,10 +82,10 @@ class PageController extends Controller
         $printer -> setJustification($center);
         $printer -> text("PELAYANAN ".$antrian->keperluan);
         $printer -> feed(2);
-        $printer -> text("No Antrian\n");
+        $printer -> text("No Antrean\n");
         $printer -> feed(1);
         $printer -> setTextSize(3, 3);
-        $printer -> text($this->keperluan($antrian->keperluan)." ".$antrian->no_antrian);
+        $printer -> text($this->keperluan($antrian->keperluan)." ".$antrian->no_antrean);
         $printer -> setTextSize(2,2);
         $printer -> feed(1);
         $printer->text(str_pad('', 24, "-")."\n");
@@ -165,7 +165,7 @@ class PageController extends Controller
         $cek = Antrian::where([
             ['status', '0'],
             ['keperluan','skck'],
-        ])->whereDate('created_at', $date)->orderBy('no_antrian', 'asc')->first();
+        ])->whereDate('created_at', $date)->orderBy('no_antrean', 'asc')->first();
         $cek->status = '1';
 
         $cek->save();
@@ -184,7 +184,7 @@ public function recallskck(Request $request)
     $cek = Antrian::where([
         ['status', '1'],
         ['keperluan','skck'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
+    ])->whereDate('created_at', $date)->orderBy('no_antrean', 'desc')->first();
 
     return response()->json($cek);
 
@@ -200,7 +200,7 @@ public function nextsktlk()
     $cek = Antrian::where([
         ['status', '0'],
         ['keperluan','sktlk'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'asc')->first();
+    ])->whereDate('created_at', $date)->orderBy('no_antrean', 'asc')->first();
     $cek->status = '1';
 
     $cek->save();
@@ -217,7 +217,7 @@ public function recallsktlk(Request $request)
     $cek = Antrian::where([
         ['status', '1'],
         ['keperluan','sktlk'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
+    ])->whereDate('created_at', $date)->orderBy('no_antrean', 'desc')->first();
 
     return response()->json($cek);
 
@@ -235,7 +235,7 @@ public function nextlp()
     $cek = Antrian::where([
         ['status', '0'],
         ['keperluan','lp'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'asc')->first();
+    ])->whereDate('created_at', $date)->orderBy('no_antrean', 'asc')->first();
     $cek->status = '1';
 
     $cek->save();
@@ -263,7 +263,7 @@ public function recalllp(Request $request)
 
 ///////////////////////////sp2hp////////////
 
-public function nextsp2hp()
+public function nextijin()
 {
 
 
@@ -272,8 +272,8 @@ public function nextsp2hp()
 
     $cek = Antrian::where([
         ['status', '0'],
-        ['keperluan','sp2hp'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'asc')->first();
+        ['keperluan','ijin keramaian'],
+    ])->whereDate('created_at', $date)->orderBy('no_antrean', 'asc')->first();
     $cek->status = '1';
 
     $cek->save();
@@ -282,7 +282,7 @@ public function nextsp2hp()
 
 }
 
-public function recallsp2hp(Request $request)
+public function recallijin(Request $request)
 {
 
 
@@ -291,124 +291,13 @@ public function recallsp2hp(Request $request)
 
     $cek = Antrian::where([
         ['status', '1'],
-        ['keperluan','sp2hp'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
+        ['keperluan','ijin keramaian'],
+    ])->whereDate('created_at', $date)->orderBy('no_antrean', 'desc')->first();
 
     return response()->json($cek);
 
 }
 
-///////////////////////STTP//////////////////
-
-public function nextsttp()
-{
-
-
-    $date = Carbon::now()->format('Y-m-d');
-
-
-    $cek = Antrian::where([
-        ['status', '0'],
-        ['keperluan','sttp'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'asc')->first();
-    $cek->status = '1';
-
-    $cek->save();
-    return response()->json($cek);
-
-
-}
-
-public function recallsttp(Request $request)
-{
-
-
-    $date = Carbon::now()->format('Y-m-d');
-
-
-    $cek = Antrian::where([
-        ['status', '1'],
-        ['keperluan','sttp'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
-
-    return response()->json($cek);
-
-}
-
-///////////////////////STTLP//////////////////
-
-public function nextsttlp()
-{
-
-
-    $date = Carbon::now()->format('Y-m-d');
-
-
-    $cek = Antrian::where([
-        ['status', '0'],
-        ['keperluan','sttlp'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'asc')->first();
-    $cek->status = '1';
-
-    $cek->save();
-    return response()->json($cek);
-
-
-}
-
-public function recallsttlp(Request $request)
-{
-
-
-    $date = Carbon::now()->format('Y-m-d');
-
-
-    $cek = Antrian::where([
-        ['status', '1'],
-        ['keperluan','sttlp'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
-
-    return response()->json($cek);
-
-}
-
-
-///////////////////////SKLD//////////////////
-
-public function nextskld()
-{
-
-
-    $date = Carbon::now()->format('Y-m-d');
-
-
-    $cek = Antrian::where([
-        ['status', '0'],
-        ['keperluan','skld'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'asc')->first();
-    $cek->status = '1';
-
-    $cek->save();
-    return response()->json($cek);
-
-
-}
-
-public function recallskld(Request $request)
-{
-
-
-    $date = Carbon::now()->format('Y-m-d');
-
-
-    $cek = Antrian::where([
-        ['status', '1'],
-        ['keperluan','skld'],
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
-
-    return response()->json($cek);
-
-}
 
 ///////////////JSON NOMOR ANTRIAN/////////////////////
 
@@ -422,47 +311,29 @@ public function loadnoantrian()
         ['status', '1'],
         ['keperluan','skck'],
 
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
+    ])->whereDate('created_at', $date)->orderBy('no_antrean', 'desc')->first();
 
     $sktlk = Antrian::where([
         ['status', '1'],
         ['keperluan','sktlk'],
 
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
+    ])->whereDate('created_at', $date)->orderBy('no_antrean', 'desc')->first();
 
     $lp = Antrian::where([
         ['status', '1'],
         ['keperluan','lp'],
 
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
+    ])->whereDate('created_at', $date)->orderBy('no_antrean', 'desc')->first();
 
-    $sp2hp = Antrian::where([
+    $ijin = Antrian::where([
         ['status', '1'],
-        ['keperluan','sp2hp'],
+        ['keperluan','ijin keramaian'],
 
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
-
-
-    $sttp = Antrian::where([
-        ['status', '1'],
-        ['keperluan','sttp'],
-
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
-
-    $sttlp = Antrian::where([
-        ['status', '1'],
-        ['keperluan','sttlp'],
-
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
-
-    $skld = Antrian::where([
-        ['status', '1'],
-        ['keperluan','skld'],
-
-    ])->whereDate('created_at', $date)->orderBy('no_antrian', 'desc')->first();
+    ])->whereDate('created_at', $date)->orderBy('no_antrean', 'desc')->first();
 
 
-    return response()->json(['skck' =>$skck, 'sktlk' => $sktlk, 'lp' =>$lp, 'sp2hp' => $sp2hp, 'sttp' => $sttp, 'sttlp' => $sttlp, 'skld' => $skld]);
+
+    return response()->json(['skck' =>$skck, 'sktlk' => $sktlk, 'lp' =>$lp, 'ijin' => $ijin]);
 
 
 

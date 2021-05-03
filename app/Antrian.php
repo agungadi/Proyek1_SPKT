@@ -10,12 +10,12 @@ class Antrian extends Model
 
     use SoftDeletes;
     //
-    protected $table = "antrian";
+    protected $table = "antrean";
 
    // public $timestamps = true;
 
     protected $fillable = [
-        'no_antrian',
+        'no_antrean',
         'keperluan',
         'status',
 

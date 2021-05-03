@@ -189,10 +189,10 @@ var playing = false
             },
             success: (data) => {
                 console.log(data)
-                $('#skck').html(data.skck.no_antrian)
+                $('#skck').html(data.skck.no_antrean)
                 $('#sktlk').html(data.sktlk.no_antrian)
                 $('#lp').html(data.lp.no_antrian)
-                $('#ijin').html(data.sp2hp.no_antrian)
+                $('#ijin').html(data.ijin.no_antrian)
 
             }
         })
